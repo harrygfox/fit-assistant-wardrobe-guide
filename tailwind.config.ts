@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'gloock': ['Gloock', 'serif'],
+				'jakarta': ['"Plus Jakarta Sans"', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,6 +66,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				fit: {
+					light: '#F9F9F7',
+					beige: '#F4F1EA',
+					taupe: '#AFA196',
+					charcoal: '#36352F',
+					accent: '#E8D0B3'
 				}
 			},
 			borderRadius: {
