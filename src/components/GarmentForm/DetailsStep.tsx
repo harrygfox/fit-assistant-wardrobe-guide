@@ -60,13 +60,13 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
     (garmentData.imageUrl !== null || garmentData.imageFile !== null);
   
   return (
-    <div className="space-y-6">
-      {/* Image upload */}
-      <div className="space-y-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* Left column - Image upload */}
+      <div className="space-y-4">
         <Label htmlFor="image">Garment Image</Label>
-        <div className="flex items-center space-x-4">
+        <div className="flex flex-col items-center space-y-4">
           <div 
-            className="w-24 h-24 rounded-md bg-muted flex items-center justify-center overflow-hidden"
+            className="w-full aspect-square rounded-md bg-muted flex items-center justify-center overflow-hidden"
           >
             {garmentData.imageUrl ? (
               <img 
@@ -75,13 +75,13 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-muted-foreground text-xs text-center px-2">
+              <span className="text-muted-foreground text-sm text-center px-2">
                 Upload Image
               </span>
             )}
           </div>
           
-          <div className="flex-1">
+          <div className="w-full">
             <Input 
               id="image" 
               type="file" 
@@ -102,128 +102,131 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
         </div>
       </div>
       
-      {/* Name */}
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input 
-          id="name"
-          value={garmentData.name}
-          onChange={(e) => onChange('name', e.target.value)}
-          placeholder="e.g. Favorite Blue Jeans"
-        />
-      </div>
-      
-      {/* Brand */}
-      <div className="space-y-2">
-        <Label htmlFor="brand">Brand</Label>
-        <Select
-          value={garmentData.brand}
-          onValueChange={(value) => onChange('brand', value)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select a brand" />
-          </SelectTrigger>
-          <SelectContent>
-            {BRANDS.map((brand) => (
-              <SelectItem key={brand} value={brand}>
-                {brand}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {garmentData.brand === 'Other' && (
-          <Input
-            className="mt-2"
-            placeholder="Enter brand name"
-            value={garmentData.brand === 'Other' ? '' : garmentData.brand}
-            onChange={(e) => onChange('brand', e.target.value)}
+      {/* Right column - Form inputs */}
+      <div className="space-y-6">
+        {/* Name */}
+        <div className="space-y-2">
+          <Label htmlFor="name">Name</Label>
+          <Input 
+            id="name"
+            value={garmentData.name}
+            onChange={(e) => onChange('name', e.target.value)}
+            placeholder="e.g. Favorite Blue Jeans"
           />
+        </div>
+        
+        {/* Brand */}
+        <div className="space-y-2">
+          <Label htmlFor="brand">Brand</Label>
+          <Select
+            value={garmentData.brand}
+            onValueChange={(value) => onChange('brand', value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a brand" />
+            </SelectTrigger>
+            <SelectContent>
+              {BRANDS.map((brand) => (
+                <SelectItem key={brand} value={brand}>
+                  {brand}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {garmentData.brand === 'Other' && (
+            <Input
+              className="mt-2"
+              placeholder="Enter brand name"
+              value={garmentData.brand === 'Other' ? '' : garmentData.brand}
+              onChange={(e) => onChange('brand', e.target.value)}
+            />
+          )}
+        </div>
+        
+        {/* Garment Type */}
+        <div className="space-y-2">
+          <Label>Garment Type</Label>
+          <RadioGroup 
+            value={garmentData.type || ''}
+            onValueChange={(value) => onChange('type', value)}
+            className="grid grid-cols-2 gap-2"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="tshirt" id="type-tshirt" />
+              <Label htmlFor="type-tshirt">T-Shirt</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="sweater" id="type-sweater" />
+              <Label htmlFor="type-sweater">Sweater</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="trousers" id="type-trousers" />
+              <Label htmlFor="type-trousers">Trousers</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="jeans" id="type-jeans" />
+              <Label htmlFor="type-jeans">Jeans</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="dress" id="type-dress" />
+              <Label htmlFor="type-dress">Dress</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="skirt" id="type-skirt" />
+              <Label htmlFor="type-skirt">Skirt</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="shoes" id="type-shoes" />
+              <Label htmlFor="type-shoes">Shoes</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="jacket" id="type-jacket" />
+              <Label htmlFor="type-jacket">Jacket</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="jumpsuit" id="type-jumpsuit" />
+              <Label htmlFor="type-jumpsuit">Jumpsuit</Label>
+            </div>
+          </RadioGroup>
+        </div>
+        
+        {/* Size */}
+        <div className="space-y-2">
+          <Label htmlFor="size">Size</Label>
+          <Input
+            id="size"
+            value={garmentData.size}
+            onChange={(e) => onChange('size', e.target.value)}
+            placeholder="e.g. M, 32, 10, etc."
+          />
+        </div>
+        
+        {/* Color */}
+        <div className="space-y-2">
+          <Label htmlFor="color">Color</Label>
+          <Select
+            value={garmentData.color}
+            onValueChange={(value) => onChange('color', value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a color" />
+            </SelectTrigger>
+            <SelectContent>
+              {COLORS.map((color) => (
+                <SelectItem key={color} value={color}>
+                  {color}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
+        {!isComplete && (
+          <p className="text-amber-500 text-sm italic">
+            All fields are required to continue.
+          </p>
         )}
       </div>
-      
-      {/* Garment Type */}
-      <div className="space-y-2">
-        <Label>Garment Type</Label>
-        <RadioGroup 
-          value={garmentData.type}
-          onValueChange={(value) => onChange('type', value)}
-          className="grid grid-cols-2 gap-2"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="tshirt" id="type-tshirt" />
-            <Label htmlFor="type-tshirt">T-Shirt</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="sweater" id="type-sweater" />
-            <Label htmlFor="type-sweater">Sweater</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="trousers" id="type-trousers" />
-            <Label htmlFor="type-trousers">Trousers</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="jeans" id="type-jeans" />
-            <Label htmlFor="type-jeans">Jeans</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="dress" id="type-dress" />
-            <Label htmlFor="type-dress">Dress</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="skirt" id="type-skirt" />
-            <Label htmlFor="type-skirt">Skirt</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="shoes" id="type-shoes" />
-            <Label htmlFor="type-shoes">Shoes</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="jacket" id="type-jacket" />
-            <Label htmlFor="type-jacket">Jacket</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="jumpsuit" id="type-jumpsuit" />
-            <Label htmlFor="type-jumpsuit">Jumpsuit</Label>
-          </div>
-        </RadioGroup>
-      </div>
-      
-      {/* Size */}
-      <div className="space-y-2">
-        <Label htmlFor="size">Size</Label>
-        <Input
-          id="size"
-          value={garmentData.size}
-          onChange={(e) => onChange('size', e.target.value)}
-          placeholder="e.g. M, 32, 10, etc."
-        />
-      </div>
-      
-      {/* Color */}
-      <div className="space-y-2">
-        <Label htmlFor="color">Color</Label>
-        <Select
-          value={garmentData.color}
-          onValueChange={(value) => onChange('color', value)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select a color" />
-          </SelectTrigger>
-          <SelectContent>
-            {COLORS.map((color) => (
-              <SelectItem key={color} value={color}>
-                {color}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      
-      {!isComplete && (
-        <p className="text-amber-500 text-sm italic">
-          All fields are required to continue.
-        </p>
-      )}
     </div>
   );
 };

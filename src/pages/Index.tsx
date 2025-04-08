@@ -1,29 +1,23 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { FitAssistantProvider } from '@/contexts/FitAssistantContext';
 import MeasurementsSection from '@/components/MeasurementsSection';
 import FitAssistantSection from '@/components/FitAssistantSection';
 import ClosetSection from '@/components/ClosetSection';
-import GarmentForm from '@/components/GarmentForm';
+import { useNavigate } from 'react-router-dom';
 import { Garment } from '@/types';
 
 const Index = () => {
-  const [isGarmentFormOpen, setIsGarmentFormOpen] = useState(false);
-  const [editingGarment, setEditingGarment] = useState<Garment | undefined>(undefined);
+  const navigate = useNavigate();
   
   const handleOpenGarmentForm = () => {
-    setEditingGarment(undefined);
-    setIsGarmentFormOpen(true);
+    navigate('/garment/create');
   };
   
   const handleEditGarment = (garment: Garment) => {
-    setEditingGarment(garment);
-    setIsGarmentFormOpen(true);
-  };
-  
-  const handleCloseGarmentForm = () => {
-    setIsGarmentFormOpen(false);
-    setEditingGarment(undefined);
+    // For now, we'll only implement adding new garments
+    // Editing will be implemented in a future update
+    console.log("Edit garment:", garment);
   };
 
   return (
@@ -43,12 +37,6 @@ const Index = () => {
         <ClosetSection 
           onAddGarment={handleOpenGarmentForm}
           onEditGarment={handleEditGarment}
-        />
-        
-        <GarmentForm 
-          isOpen={isGarmentFormOpen}
-          onClose={handleCloseGarmentForm}
-          editGarment={editingGarment}
         />
       </div>
     </FitAssistantProvider>

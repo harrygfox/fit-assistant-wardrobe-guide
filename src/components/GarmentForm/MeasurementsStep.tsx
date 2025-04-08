@@ -45,7 +45,7 @@ const MEASUREMENT_RANGES: Record<MeasurementType, [number, number]> = {
 
 const MeasurementsStep: React.FC<MeasurementsStepProps> = ({ garmentData, onChange }) => {
   const { unitSystem, toggleUnitSystem, convertToImperial } = useFitAssistant();
-  const measurementTypes = GARMENT_MEASUREMENTS[garmentData.type as GarmentType] || [];
+  const measurementTypes = garmentData.type ? GARMENT_MEASUREMENTS[garmentData.type as GarmentType] || [] : [];
   
   const updateMeasurement = (type: MeasurementType, value: number) => {
     const measurements = [...garmentData.measurements];
@@ -68,7 +68,7 @@ const MeasurementsStep: React.FC<MeasurementsStepProps> = ({ garmentData, onChan
   // Format display value with units
   const formatValue = (type: MeasurementType, value: number): string => {
     // Convert to imperial if needed
-    const displayValue = unitSystem === 'imperial' ? convertToImperial(value) : value;
+    const displayValue = unitSystem === 'imperial' ? convertToImperial(value, type) : value;
     
     if (type === 'weight') {
       return unitSystem === 'metric' ? `${displayValue} kg` : `${displayValue} lbs`;
@@ -110,18 +110,19 @@ const MeasurementsStep: React.FC<MeasurementsStepProps> = ({ garmentData, onChan
             min={0}
             max={unitSystem === 'metric' ? 
               MEASUREMENT_RANGES[type][1] : 
-              convertToImperial(MEASUREMENT_RANGES[type][1])
+              convertToImperial(MEASUREMENT_RANGES[type][1], type)
             }
             step={unitSystem === 'metric' ? 1 : 0.5}
             value={[unitSystem === 'metric' ? 
               getMeasurementValue(type) : 
-              convertToImperial(getMeasurementValue(type))
+              convertToImperial(getMeasurementValue(type), type)
             ]}
             onValueChange={(values) => {
               const value = values[0];
-              const metricValue = unitSystem === 'metric' ? 
-                value : 
-                Math.round(value * 2.54); // Convert inches to cm
+              const metricValue = unitSystem === 'metric' ? value : 
+                type === 'weight' ? 
+                  Math.round(value / 2.20462) : // Convert pounds to kg
+                  Math.round(value * 2.54); // Convert inches to cm
               updateMeasurement(type, metricValue);
             }}
           />

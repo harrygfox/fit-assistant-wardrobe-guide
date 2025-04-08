@@ -27,7 +27,7 @@ const MEASUREMENT_LABELS: Record<MeasurementType, string> = {
 };
 
 const FitPerceptionStep: React.FC<FitPerceptionStepProps> = ({ garmentData, onChange }) => {
-  const fitTypes = GARMENT_MEASUREMENTS[garmentData.type as GarmentType] || [];
+  const fitTypes = garmentData.type ? GARMENT_MEASUREMENTS[garmentData.type as GarmentType] || [] : [];
   const hasMeasurements = garmentData.measurements.length > 0;
   
   const updateFitPerception = (measurementType: MeasurementType, perception: FitPerception) => {
@@ -50,7 +50,7 @@ const FitPerceptionStep: React.FC<FitPerceptionStepProps> = ({ garmentData, onCh
   
   if (!hasMeasurements) {
     return (
-      <Alert variant="warning" className="mb-6">
+      <Alert className="mb-6">
         <AlertTriangle className="h-4 w-4" />
         <AlertDescription>
           This garment won't be used by the Fit Assistant unless measurements and fit perception are provided.

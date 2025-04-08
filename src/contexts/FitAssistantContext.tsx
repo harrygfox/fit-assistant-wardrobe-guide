@@ -24,8 +24,8 @@ interface FitAssistantContextType {
   updateMeasurement: (type: MeasurementType, value: number) => void;
   addMeasurement: (type: MeasurementType) => void;
   removeMeasurement: (type: MeasurementType) => void;
-  convertToImperial: (value: number) => number;
-  convertToMetric: (value: number) => number;
+  convertToImperial: (value: number, type?: MeasurementType) => number;
+  convertToMetric: (value: number, type?: MeasurementType) => number;
   getFitAssistantGarments: () => Garment[];
   hasConflictingFitData: (newGarment: GarmentFormData) => Garment[];
 }
@@ -49,9 +49,19 @@ const cmToInches = (cm: number): number => {
   return Math.round(rawInches * 2) / 2;
 };
 
+// Convert kg to lbs
+const kgToLbs = (kg: number): number => {
+  return Math.round(kg * 2.20462 * 10) / 10;
+};
+
 // Convert inches to cm (rounded to nearest cm)
 const inchesToCm = (inches: number): number => {
   return Math.round(inches * 2.54);
+};
+
+// Convert lbs to kg
+const lbsToKg = (lbs: number): number => {
+  return Math.round(lbs / 2.20462);
 };
 
 export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -66,12 +76,18 @@ export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ 
   };
   
   // Convert to imperial for display
-  const convertToImperial = (value: number): number => {
+  const convertToImperial = (value: number, type?: MeasurementType): number => {
+    if (type === 'weight') {
+      return kgToLbs(value);
+    }
     return cmToInches(value);
   };
   
   // Convert to metric for storage
-  const convertToMetric = (value: number): number => {
+  const convertToMetric = (value: number, type?: MeasurementType): number => {
+    if (type === 'weight') {
+      return lbsToKg(value);
+    }
     return inchesToCm(value);
   };
   

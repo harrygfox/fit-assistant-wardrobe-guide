@@ -23,13 +23,13 @@ const MeasurementSlider: React.FC<MeasurementSliderProps> = ({
   
   // Display value based on unit system
   const displayValue = unitSystem === 'imperial' 
-    ? convertToImperial(value) 
+    ? convertToImperial(value, type) 
     : value;
   
   // Handle value change with unit conversion
   const handleValueChange = (newValue: number[]) => {
     const value = newValue[0];
-    onChange(unitSystem === 'imperial' ? convertToMetric(value) : value);
+    onChange(unitSystem === 'imperial' ? convertToMetric(value, type) : value);
   };
   
   // Format display with units
@@ -52,7 +52,9 @@ const MeasurementSlider: React.FC<MeasurementSliderProps> = ({
   // Calculate slider range based on units
   const sliderRange = unitSystem === 'metric' 
     ? range 
-    : [convertToImperial(range[0]), convertToImperial(range[1])];
+    : type === 'weight'
+      ? [convertToImperial(range[0], type), convertToImperial(range[1], type)]
+      : [convertToImperial(range[0]), convertToImperial(range[1])];
     
   // Calculate step based on unit system
   const step = unitSystem === 'metric' ? 1 : 0.5;
