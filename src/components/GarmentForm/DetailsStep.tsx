@@ -27,6 +27,8 @@ const BRANDS = [
 
 const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
   const [imageError, setImageError] = useState<string | null>(null);
+  const [customBrand, setCustomBrand] = useState<string>('');
+  const [isOtherBrandSelected, setIsOtherBrandSelected] = useState<boolean>(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,6 +50,25 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
     
     onChange('imageFile', file);
     onChange('imageUrl', URL.createObjectURL(file));
+  };
+  
+  // Handle brand selection
+  const handleBrandChange = (value: string) => {
+    if (value === 'Other') {
+      setIsOtherBrandSelected(true);
+      setCustomBrand('');
+      onChange('brand', 'Other');
+    } else {
+      setIsOtherBrandSelected(false);
+      onChange('brand', value);
+    }
+  };
+
+  // Handle custom brand input change
+  const handleCustomBrandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCustomBrand(value);
+    onChange('brand', value);
   };
   
   // Check if form is complete for this step
@@ -120,8 +141,8 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
         <div className="space-y-2">
           <Label htmlFor="brand">Brand</Label>
           <Select
-            value={garmentData.brand}
-            onValueChange={(value) => onChange('brand', value)}
+            value={isOtherBrandSelected ? 'Other' : garmentData.brand}
+            onValueChange={handleBrandChange}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select a brand" />
@@ -134,12 +155,12 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
               ))}
             </SelectContent>
           </Select>
-          {garmentData.brand === 'Other' && (
+          {isOtherBrandSelected && (
             <Input
               className="mt-2"
               placeholder="Enter brand name"
-              value={garmentData.brand === 'Other' ? '' : garmentData.brand}
-              onChange={(e) => onChange('brand', e.target.value)}
+              value={customBrand}
+              onChange={handleCustomBrandChange}
             />
           )}
         </div>
