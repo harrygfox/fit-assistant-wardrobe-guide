@@ -80,17 +80,17 @@ const FitPerceptionStep: React.FC<FitPerceptionStepProps> = ({ garmentData, onCh
                 {MEASUREMENT_LABELS[measurementType]} Fit
               </label>
               <Select
-                value={getPerceptionValue(measurementType) || ''}
+                value={getPerceptionValue(measurementType) || "not_specified"}
                 onValueChange={(value) => updateFitPerception(
                   measurementType, 
-                  value === '' ? undefined : value as FitPerception
+                  value === "not_specified" ? undefined : value as FitPerception
                 )}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select fit perception" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Not specified</SelectItem>
+                  <SelectItem value="not_specified">Not specified</SelectItem>
                   <SelectItem value="too tight">Too Tight</SelectItem>
                   <SelectItem value="slightly tight">Slightly Tight</SelectItem>
                   <SelectItem value="just right">Just Right</SelectItem>
