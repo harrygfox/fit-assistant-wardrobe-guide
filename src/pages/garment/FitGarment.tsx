@@ -2,14 +2,15 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useFitAssistant } from '@/contexts/FitAssistantContext';
+import { useFitAssistant, FitAssistantProvider } from '@/contexts/FitAssistantContext';
 import { GarmentFormData, Garment } from '@/types';
 import FitPerceptionStep from '@/components/GarmentForm/FitPerceptionStep';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-const FitGarment: React.FC = () => {
+// Wrap the component with FitAssistantProvider
+const FitGarmentContent: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
@@ -288,6 +289,15 @@ const FitGarment: React.FC = () => {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+};
+
+// Export the wrapped component
+const FitGarment: React.FC = () => {
+  return (
+    <FitAssistantProvider>
+      <FitGarmentContent />
+    </FitAssistantProvider>
   );
 };
 
