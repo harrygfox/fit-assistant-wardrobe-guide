@@ -32,6 +32,13 @@ interface FitAssistantContextType {
 
 const FitAssistantContext = createContext<FitAssistantContextType | undefined>(undefined);
 
+// LOCAL STORAGE KEYS
+const STORAGE_KEYS = {
+  GARMENTS: 'fit_assistant_garments',
+  USER_PROFILE: 'fit_assistant_user_profile',
+  UNIT_SYSTEM: 'fit_assistant_unit_system'
+};
+
 // Simulated user profile for now
 const DEFAULT_PROFILE: UserProfile = {
   id: '1',
@@ -64,12 +71,71 @@ const lbsToKg = (lbs: number): number => {
   return Math.round(lbs / 2.20462);
 };
 
+// Helper function to safely parse stored garments
+const parseStoredGarments = (storedGarments: string | null): Garment[] => {
+  if (!storedGarments) return [];
+  
+  try {
+    const parsedGarments = JSON.parse(storedGarments);
+    return parsedGarments.map((garment: any) => ({
+      ...garment,
+      createdAt: new Date(garment.createdAt),
+      updatedAt: new Date(garment.updatedAt)
+    }));
+  } catch (error) {
+    console.error('Error parsing stored garments:', error);
+    return [];
+  }
+};
+
+// Helper function to safely parse stored user profile
+const parseStoredUserProfile = (storedProfile: string | null): UserProfile | null => {
+  if (!storedProfile) return DEFAULT_PROFILE;
+  
+  try {
+    return JSON.parse(storedProfile);
+  } catch (error) {
+    console.error('Error parsing stored user profile:', error);
+    return DEFAULT_PROFILE;
+  }
+};
+
 export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(DEFAULT_PROFILE);
-  const [garments, setGarments] = useState<Garment[]>([]);
-  const [unitSystem, setUnitSystem] = useState<UnitSystem>('metric');
+  // Initialize state with values from localStorage if available
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
+    const storedProfile = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
+    return parseStoredUserProfile(storedProfile);
+  });
+  
+  const [garments, setGarments] = useState<Garment[]>(() => {
+    const storedGarments = localStorage.getItem(STORAGE_KEYS.GARMENTS);
+    return parseStoredGarments(storedGarments);
+  });
+  
+  const [unitSystem, setUnitSystem] = useState<UnitSystem>(() => {
+    const storedUnitSystem = localStorage.getItem(STORAGE_KEYS.UNIT_SYSTEM);
+    return (storedUnitSystem as UnitSystem) || 'metric';
+  });
+  
   const [isLoading, setIsLoading] = useState(false);
 
+  // Persist garments to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.GARMENTS, JSON.stringify(garments));
+  }, [garments]);
+  
+  // Persist user profile to localStorage whenever it changes
+  useEffect(() => {
+    if (userProfile) {
+      localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(userProfile));
+    }
+  }, [userProfile]);
+  
+  // Persist unit system to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.UNIT_SYSTEM, unitSystem);
+  }, [unitSystem]);
+  
   // Toggle between metric and imperial
   const toggleUnitSystem = () => {
     setUnitSystem(prev => prev === 'metric' ? 'imperial' : 'metric');

@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { FitAssistantProvider } from '@/contexts/FitAssistantContext';
 import MeasurementsSection from '@/components/MeasurementsSection';
 import FitAssistantSection from '@/components/FitAssistantSection';
 import ClosetSection from '@/components/ClosetSection';
@@ -21,25 +20,23 @@ const Index = () => {
   };
 
   return (
-    <FitAssistantProvider>
-      <div className="container py-8">
-        <header className="mb-12 text-center">
-          <h1 className="text-4xl font-gloock mb-2">My Closet</h1>
-          <p className="text-muted-foreground">
-            Track your garments and get personalized fit recommendations
-          </p>
-        </header>
-        
-        <MeasurementsSection />
-        
-        <FitAssistantSection />
-        
-        <ClosetSection 
-          onAddGarment={handleOpenGarmentForm}
-          onEditGarment={handleEditGarment}
-        />
-      </div>
-    </FitAssistantProvider>
+    <div className="container py-8">
+      <header className="mb-12 text-center">
+        <h1 className="text-4xl font-gloock mb-2">My Closet</h1>
+        <p className="text-muted-foreground">
+          Track your garments and get personalized fit recommendations
+        </p>
+      </header>
+      
+      <MeasurementsSection />
+      
+      <FitAssistantSection />
+      
+      <ClosetSection 
+        onAddGarment={handleOpenGarmentForm}
+        onEditGarment={handleEditGarment}
+      />
+    </div>
   );
 };
 
