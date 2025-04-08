@@ -13,7 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 const initialFormData: GarmentFormData = {
   name: '',
   brand: '',
-  type: 'tshirt',
+  type: 'tshirt', // Default to a valid GarmentType
   size: '',
   color: '',
   imageUrl: null,
@@ -42,7 +42,8 @@ const CreateGarment: React.FC = () => {
     return (
       formData.name.trim() !== '' &&
       formData.brand.trim() !== '' &&
-      formData.type !== '' &&
+      // Fix: Check if type is a valid GarmentType instead of comparing to empty string
+      formData.type !== undefined &&
       formData.size.trim() !== '' &&
       formData.color.trim() !== '' &&
       (formData.imageUrl !== null || formData.imageFile !== null)

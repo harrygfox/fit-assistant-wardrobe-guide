@@ -54,7 +54,8 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
   const isComplete = 
     garmentData.name.trim() !== '' &&
     garmentData.brand.trim() !== '' &&
-    garmentData.type !== '' &&
+    // Fix: Check if type is a valid GarmentType instead of comparing to empty string
+    garmentData.type !== undefined &&
     garmentData.size.trim() !== '' &&
     garmentData.color.trim() !== '' &&
     (garmentData.imageUrl !== null || garmentData.imageFile !== null);

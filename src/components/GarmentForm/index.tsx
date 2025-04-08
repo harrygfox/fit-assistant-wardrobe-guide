@@ -101,7 +101,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({ isOpen, onClose, editGarment 
         return (
           formData.name.trim() !== '' &&
           formData.brand.trim() !== '' &&
-          formData.type !== '' &&
+          // Fix: Check if type is a valid GarmentType instead of comparing to empty string
+          formData.type !== undefined &&
           formData.size.trim() !== '' &&
           formData.color.trim() !== '' &&
           (formData.imageUrl !== null || formData.imageFile !== null)
