@@ -16,10 +16,16 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
+        measurement: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 font-jakarta", // New variant with sans-serif font
+      },
+      font: {
+        default: "",
+        sans: "font-jakarta",
       },
     },
     defaultVariants: {
       variant: "default",
+      font: "default",
     },
   }
 )
@@ -28,9 +34,9 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
+function Badge({ className, variant, font, ...props }: BadgeProps) {
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+    <div className={cn(badgeVariants({ variant, font }), className)} {...props} />
   )
 }
 

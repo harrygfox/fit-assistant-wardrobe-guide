@@ -1,7 +1,6 @@
 
 import React from 'react';
 import MeasurementsAccordion from '@/components/MeasurementsAccordion';
-import FitAssistantSection from '@/components/FitAssistantSection';
 import ClosetSection from '@/components/ClosetSection';
 import { useNavigate } from 'react-router-dom';
 import { Garment } from '@/types';
@@ -29,8 +28,6 @@ const Index = () => {
       </header>
       
       <MeasurementsAccordion />
-      
-      <FitAssistantSection />
       
       <ClosetSection 
         onAddGarment={handleOpenGarmentForm}

@@ -106,7 +106,7 @@ const MeasurementsAccordion: React.FC = () => {
             <div className="flex items-center gap-2">
               <Ruler className="h-4 w-4" />
               <span>My Measurements</span>
-              <Badge variant="secondary" className="ml-2 text-xs">
+              <Badge variant="measurement" className="ml-2 text-xs">
                 {measurementsBadge}
               </Badge>
             </div>
