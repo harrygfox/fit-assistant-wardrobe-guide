@@ -20,7 +20,7 @@ const FitAssistantCard: React.FC = () => {
         className="fit-card h-full flex flex-col cursor-pointer"
         onClick={() => setIsDialogOpen(true)}
       >
-        <div className="relative aspect-square overflow-hidden bg-fit-light flex flex-col items-center justify-center p-6 h-full">
+        <div className="relative aspect-square overflow-hidden bg-white flex flex-col items-center justify-center p-6 h-full">
           <div className="w-16 h-16 mb-4 rounded-full bg-fit-beige flex items-center justify-center">
             <span className="text-2xl font-gloock">
               {fitGarments.length}/5
