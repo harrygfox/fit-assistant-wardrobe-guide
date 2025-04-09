@@ -22,7 +22,9 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
 }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
+  // Updated logic to check if the garment has both measurements and fit perceptions
   const hasCompleteFitData = garment.measurements.length > 0 && 
+    garment.fit.length > 0 &&
     garment.fit.every(f => f.perception !== undefined);
   
   return (

@@ -17,10 +17,10 @@ const FitAssistantCard: React.FC = () => {
   return (
     <>
       <Card 
-        className={`fit-card h-full flex flex-col cursor-pointer ${!isActive ? 'fit-assistant-pulse' : ''}`}
+        className="fit-card h-full flex flex-col cursor-pointer"
         onClick={() => setIsDialogOpen(true)}
       >
-        <div className="relative aspect-square overflow-hidden bg-fit-light flex flex-col items-center justify-center p-6">
+        <div className="relative aspect-square overflow-hidden bg-fit-light flex flex-col items-center justify-center p-6 h-full">
           <div className="w-16 h-16 mb-4 rounded-full bg-fit-beige flex items-center justify-center">
             <span className="text-2xl font-gloock">
               {fitGarments.length}/5
@@ -37,6 +37,8 @@ const FitAssistantCard: React.FC = () => {
               : 'Complete to unlock personalized recommendations'
             }
           </p>
+          
+          <button className="mt-4 text-sm underline">How it works</button>
           
           {isActive && (
             <div className="absolute top-3 right-3">

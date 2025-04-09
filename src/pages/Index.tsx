@@ -13,9 +13,11 @@ const Index = () => {
   };
   
   const handleEditGarment = (garment: Garment) => {
-    // For now, we'll only implement adding new garments
-    // Editing will be implemented in a future update
+    // Navigate to the edit page
+    // For now, we'll just log the garment as edit functionality 
+    // will be implemented in a future update
     console.log("Edit garment:", garment);
+    navigate(`/garment/create?id=${garment.id}`);
   };
 
   return (
