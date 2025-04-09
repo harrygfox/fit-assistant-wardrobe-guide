@@ -1,5 +1,4 @@
-
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { 
   UserProfile, 
   Garment, 
@@ -112,10 +111,8 @@ export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return parseStoredGarments(storedGarments);
   });
   
-  const [unitSystem, setUnitSystem] = useState<UnitSystem>(() => {
-    const storedUnitSystem = localStorage.getItem(STORAGE_KEYS.UNIT_SYSTEM);
-    return (storedUnitSystem as UnitSystem) || 'metric';
-  });
+  // Changed default from 'metric' to 'imperial'
+  const [unitSystem, setUnitSystem] = useState<UnitSystem>('imperial');
   
   const [isLoading, setIsLoading] = useState(false);
 
@@ -136,10 +133,10 @@ export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ 
     localStorage.setItem(STORAGE_KEYS.UNIT_SYSTEM, unitSystem);
   }, [unitSystem]);
   
-  // Toggle between metric and imperial
-  const toggleUnitSystem = () => {
+  // Toggle unit system between metric and imperial
+  const toggleUnitSystem = useCallback(() => {
     setUnitSystem(prev => prev === 'metric' ? 'imperial' : 'metric');
-  };
+  }, []);
   
   // Convert to imperial for display
   const convertToImperial = (value: number, type?: MeasurementType): number => {
@@ -272,7 +269,7 @@ export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return conflicts;
   };
   
-  const value = {
+  const contextValue = {
     userProfile,
     garments,
     unitSystem,
@@ -292,7 +289,7 @@ export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ 
   };
   
   return (
-    <FitAssistantContext.Provider value={value}>
+    <FitAssistantContext.Provider value={contextValue}>
       {children}
     </FitAssistantContext.Provider>
   );

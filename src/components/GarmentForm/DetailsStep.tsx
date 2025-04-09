@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { GarmentFormData, GarmentType } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { AlertOctagon } from 'lucide-react';
+import { AlertOctagon, Camera } from 'lucide-react';
 
 interface DetailsStepProps {
   garmentData: GarmentFormData;
@@ -29,6 +29,7 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
   const [imageError, setImageError] = useState<string | null>(null);
   const [customBrand, setCustomBrand] = useState<string>('');
   const [isOtherBrandSelected, setIsOtherBrandSelected] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -50,6 +51,11 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
     
     onChange('imageFile', file);
     onChange('imageUrl', URL.createObjectURL(file));
+  };
+  
+  // Handle clicking on the upload area
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
   };
   
   // Handle brand selection
@@ -75,7 +81,6 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
   const isComplete = 
     garmentData.name.trim() !== '' &&
     garmentData.brand.trim() !== '' &&
-    // Fix: Check if type is a valid GarmentType instead of comparing to empty string
     garmentData.type !== undefined &&
     garmentData.size.trim() !== '' &&
     garmentData.color.trim() !== '' &&
@@ -88,7 +93,8 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
         <Label htmlFor="image">Garment Image</Label>
         <div className="flex flex-col items-center space-y-4">
           <div 
-            className="w-full aspect-square rounded-md bg-muted flex items-center justify-center overflow-hidden"
+            className="w-full aspect-square rounded-md border-2 border-dashed border-muted hover:border-primary bg-muted flex flex-col items-center justify-center overflow-hidden cursor-pointer transition-colors"
+            onClick={handleUploadClick}
           >
             {garmentData.imageUrl ? (
               <img 
@@ -97,9 +103,15 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-muted-foreground text-sm text-center px-2">
-                Upload Image
-              </span>
+              <div className="flex flex-col items-center justify-center p-4">
+                <Camera className="h-10 w-10 text-muted-foreground mb-2" />
+                <span className="text-muted-foreground text-center mb-1">
+                  Click to upload image
+                </span>
+                <span className="text-xs text-muted-foreground text-center">
+                  Drag and drop or click to browse
+                </span>
+              </div>
             )}
           </div>
           
@@ -109,7 +121,8 @@ const DetailsStep: React.FC<DetailsStepProps> = ({ garmentData, onChange }) => {
               type="file" 
               accept="image/*"
               onChange={handleImageUpload}
-              className="cursor-pointer"
+              className="hidden"
+              ref={fileInputRef}
             />
             {imageError && (
               <p className="text-destructive text-sm mt-1 flex items-center">

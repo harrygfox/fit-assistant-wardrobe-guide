@@ -1,6 +1,6 @@
 
 import React from 'react';
-import MeasurementsSection from '@/components/MeasurementsSection';
+import MeasurementsAccordion from '@/components/MeasurementsAccordion';
 import FitAssistantSection from '@/components/FitAssistantSection';
 import ClosetSection from '@/components/ClosetSection';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ const Index = () => {
         </p>
       </header>
       
-      <MeasurementsSection />
+      <MeasurementsAccordion />
       
       <FitAssistantSection />
       

@@ -53,8 +53,8 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
         </CardContent>
         
         <CardFooter className="p-4 pt-0 border-t flex-col items-stretch space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm">Teach Fit Assistant</span>
+          <div className="flex items-center justify-between py-2">
+            <span className="text-sm mr-4">Teach Fit Assistant</span>
             <Switch 
               checked={garment.teachFitAssistant} 
               onCheckedChange={(checked) => onToggleFitAssistant(garment.id, checked)}

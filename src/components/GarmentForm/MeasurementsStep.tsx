@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useFitAssistant } from '@/contexts/FitAssistantContext';
-import { GarmentFormData, GarmentType, GARMENT_MEASUREMENTS, MeasurementType, BodyMeasurement } from '@/types';
+import { GarmentFormData, GarmentType, GARMENT_MEASUREMENTS, MeasurementType } from '@/types';
 import { Slider } from '@/components/ui/slider';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import UnitToggle from '@/components/UnitToggle';
@@ -88,8 +88,8 @@ const MeasurementsStep: React.FC<MeasurementsStepProps> = ({ garmentData, onChan
   
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <p className="text-sm text-muted-foreground">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+        <p className="text-sm text-muted-foreground mb-4 sm:mb-0 max-w-md">
           Enter the measurements of your garment. These are optional but help improve Fit Assistant's accuracy.
         </p>
         <UnitToggle value={unitSystem} onChange={toggleUnitSystem} />
@@ -97,7 +97,7 @@ const MeasurementsStep: React.FC<MeasurementsStepProps> = ({ garmentData, onChan
       
       {measurementTypes.map(type => (
         <div key={type} className="space-y-2">
-          <div className="flex justify-between">
+          <div className="flex justify-between flex-wrap">
             <label className="text-sm font-medium">
               {MEASUREMENT_LABELS[type]}
             </label>

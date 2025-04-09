@@ -73,9 +73,11 @@ const MeasurementsGarment: React.FC = () => {
         <Button 
           variant="outline" 
           onClick={handlePrev}
-          className="flex items-center"
+          className="flex items-center md:w-auto sm:w-auto"
+          aria-label="Previous"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Previous
+          <ArrowLeft className="mr-2 h-4 w-4" /> 
+          <span className="hidden sm:inline">Previous</span>
         </Button>
         <Button 
           onClick={handleNext}

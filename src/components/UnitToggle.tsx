@@ -10,7 +10,7 @@ interface UnitToggleProps {
 
 const UnitToggle: React.FC<UnitToggleProps> = ({ value, onChange }) => {
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-4 py-2">
       <span className={`text-sm ${value === 'metric' ? 'font-medium' : 'text-muted-foreground'}`}>
         cm/kg
       </span>

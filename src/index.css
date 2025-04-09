@@ -116,4 +116,23 @@
   .fit-input {
     @apply border-b border-border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-primary;
   }
+
+  /* Fit Assistant Card Pulse Animation */
+  .fit-assistant-pulse {
+    animation: pulse 2.5s infinite;
+    box-shadow: 0 0 0 0 rgba(244, 241, 234, 0.7);
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(244, 241, 234, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(244, 241, 234, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(244, 241, 234, 0);
+    }
+  }
 }
+

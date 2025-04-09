@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import GarmentCard from './GarmentCard';
 import EmptyCloset from './EmptyCloset';
+import FitAssistantCard from './FitAssistantCard';
 import { Plus } from 'lucide-react';
 import { Garment } from '@/types';
 
@@ -72,9 +73,19 @@ const ClosetSection: React.FC<{
       </div>
       
       {garments.length === 0 ? (
-        <EmptyCloset onAddGarment={onAddGarment} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="col-span-1">
+            <FitAssistantCard />
+          </div>
+          <div className="col-span-1 md:col-span-2">
+            <EmptyCloset onAddGarment={onAddGarment} />
+          </div>
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="col-span-1">
+            <FitAssistantCard />
+          </div>
           {sortedGarments.map((garment) => (
             <GarmentCard 
               key={garment.id} 
