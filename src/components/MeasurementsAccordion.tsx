@@ -153,10 +153,13 @@ const MeasurementsAccordion: React.FC = () => {
           </DialogHeader>
           
           <div className="grid md:grid-cols-2 gap-6 py-4">
-            <div className="hidden md:block">
-              {/* Placeholder for body illustration */}
-              <div className="aspect-[3/5] bg-fit-beige rounded-lg flex items-center justify-center">
-                <span className="text-sm text-muted-foreground">Body measurement illustration</span>
+            <div className="bg-fit-beige hidden md:flex items-center justify-center h-full">
+              <div className="aspect-[3/5] rounded-lg flex items-center justify-center">
+                <img 
+                  src="/dressmakers-dummy.png" 
+                  alt="Body measurement illustration" 
+                  className="h-full object-contain"
+                />
               </div>
             </div>
             
