@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useFitAssistant } from '@/contexts/FitAssistantContext';
 import { GarmentFormData, GarmentCreationStep } from '@/types';
@@ -26,8 +26,35 @@ const initialFormData: GarmentFormData = {
 const CreateGarment: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const garmentId = searchParams.get('id');
+  const { garments } = useFitAssistant();
+  
   const [formData, setFormData] = useState<GarmentFormData>(initialFormData);
   const [isExitDialogOpen, setIsExitDialogOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  
+  // Load existing garment data if in edit mode
+  useEffect(() => {
+    if (garmentId) {
+      const existingGarment = garments.find(g => g.id === garmentId);
+      if (existingGarment) {
+        setIsEditMode(true);
+        setFormData({
+          name: existingGarment.name,
+          brand: existingGarment.brand,
+          type: existingGarment.type,
+          size: existingGarment.size,
+          color: existingGarment.color,
+          imageUrl: existingGarment.imageUrl,
+          imageFile: null,
+          teachFitAssistant: existingGarment.teachFitAssistant,
+          measurements: [...existingGarment.measurements],
+          fit: [...existingGarment.fit]
+        });
+      }
+    }
+  }, [garmentId, garments]);
   
   // Handle field changes
   const handleChange = (field: string, value: any) => {
@@ -42,7 +69,6 @@ const CreateGarment: React.FC = () => {
     return (
       formData.name.trim() !== '' &&
       formData.brand.trim() !== '' &&
-      // Fix: Check if type is a valid GarmentType instead of comparing to empty string
       formData.type !== undefined &&
       formData.size.trim() !== '' &&
       formData.color.trim() !== '' &&
@@ -53,7 +79,7 @@ const CreateGarment: React.FC = () => {
   // Handle next step
   const handleNext = () => {
     if (isStepComplete()) {
-      navigate('/garment/create/measurements', { state: { formData } });
+      navigate('/garment/create/measurements', { state: { formData, isEditMode, garmentId } });
     }
   };
   
@@ -75,7 +101,7 @@ const CreateGarment: React.FC = () => {
     <div className="container py-8 max-w-4xl mx-auto">
       <header className="mb-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-gloock">Add New Garment</h1>
+          <h1 className="text-3xl font-gloock">{isEditMode ? 'Edit Garment' : 'Add New Garment'}</h1>
           <Button variant="ghost" onClick={handleClose}>
             <ArrowLeft className="mr-2 h-4 w-4" /> Cancel
           </Button>
@@ -113,8 +139,8 @@ const CreateGarment: React.FC = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle>
             <AlertDialogDescription>
-              You've started adding a new garment, but your changes haven't been saved. 
-              If you leave now, this garment will be lost from your closet.
+              You've started {isEditMode ? 'editing' : 'adding'} a garment, but your changes haven't been saved. 
+              If you leave now, your changes will be lost.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -125,7 +151,7 @@ const CreateGarment: React.FC = () => {
               onClick={() => navigate('/')}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Discard Garment
+              Discard Changes
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
