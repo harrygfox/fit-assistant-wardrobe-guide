@@ -156,7 +156,7 @@ const MeasurementsAccordion: React.FC = () => {
             <div className="bg-fit-beige hidden md:flex items-center justify-center h-full">
               <div className="aspect-[3/5] rounded-lg flex items-center justify-center">
                 <img 
-                  src="/dressmakers-dummy.png" 
+                  src={`${import.meta.env.BASE_URL}dressmakers-dummy.png`}
                   alt="Body measurement illustration" 
                   className="h-full object-contain"
                 />

@@ -19,7 +19,7 @@ const App = () => (
       <FitAssistantProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename="/fit-assistant-wardrobe-guide">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/garment/create" element={<CreateGarment />} />
