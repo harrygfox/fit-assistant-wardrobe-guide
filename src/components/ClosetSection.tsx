@@ -73,11 +73,11 @@ const ClosetSection: React.FC<{
       </div>
       
       {garments.length === 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="col-span-1">
             <FitAssistantCard />
           </div>
-          <div className="col-span-1">
+          <div className="col-span-1 md:col-span-2">
             <EmptyCloset onAddGarment={onAddGarment} />
           </div>
         </div>

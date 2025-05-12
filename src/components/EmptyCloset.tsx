@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, Ruler } from 'lucide-react';
+import { Plus, Ruler, TShirt, Hanger } from 'lucide-react';
 import { useFitAssistant } from '@/contexts/FitAssistantContext';
 import { Slider } from '@/components/ui/slider';
 import UnitToggle from './UnitToggle';
-import { MeasurementType } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface EmptyClosetProps {
   onAddGarment: () => void;
@@ -39,31 +39,48 @@ const EmptyCloset: React.FC<EmptyClosetProps> = ({ onAddGarment }) => {
     }
   };
   
+  const GarmentSkeleton = () => (
+    <div className="relative w-full h-48 mb-4 animate-pulse">
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10">
+        <Hanger className="w-12 h-12 text-muted-foreground" />
+      </div>
+      <div className="absolute top-12 left-1/2 transform -translate-x-1/2 w-[80%] h-40 bg-muted rounded-md flex items-center justify-center">
+        <TShirt className="w-20 h-20 text-muted-foreground opacity-30" />
+      </div>
+    </div>
+  );
+
   return (
     <Card className="h-full">
       <CardContent className="p-6">
         <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
           {!showHeightInput ? (
             <>
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-                <Ruler className="h-8 w-8 text-muted-foreground" />
-              </div>
+              <GarmentSkeleton />
               
               <div className="space-y-2">
-                <h3 className="text-lg font-medium">Get Started</h3>
+                <h3 className="text-xl font-medium">Your Closet Awaits!</h3>
                 <p className="text-sm text-muted-foreground">
-                  Add your height and garments to get personalized fit recommendations
+                  Start building your digital wardrobe to get personalized fit recommendations
                 </p>
               </div>
               
-              <div className="flex flex-col space-y-3">
-                <Button onClick={handleAddHeight} variant="outline" className="w-full justify-start">
+              <div className="flex flex-col space-y-4 w-full max-w-sm">
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <p className="text-sm font-medium mb-2">Did you know?</p>
+                  <p className="text-xs text-muted-foreground">
+                    Adding just 5 garments that fit you well teaches Fit Assistant to make accurate recommendations for new items.
+                  </p>
+                </div>
+                
+                <Button onClick={onAddGarment} className="w-full" size="lg">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Your First Garment
+                </Button>
+                
+                <Button onClick={handleAddHeight} variant="outline" className="w-full" size="sm">
                   <Ruler className="mr-2 h-4 w-4" />
                   Add Your Height
-                </Button>
-                <Button onClick={onAddGarment} className="w-full justify-start">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add First Garment
                 </Button>
               </div>
             </>
