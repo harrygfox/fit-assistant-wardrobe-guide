@@ -1,62 +1,129 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Ruler } from 'lucide-react';
+import { useFitAssistant } from '@/contexts/FitAssistantContext';
+import { Slider } from '@/components/ui/slider';
+import UnitToggle from './UnitToggle';
+import { MeasurementType } from '@/types';
 
 interface EmptyClosetProps {
   onAddGarment: () => void;
 }
 
 const EmptyCloset: React.FC<EmptyClosetProps> = ({ onAddGarment }) => {
+  const { userProfile, unitSystem, toggleUnitSystem, updateMeasurement, convertToImperial } = useFitAssistant();
+  const [showHeightInput, setShowHeightInput] = useState(false);
+  
+  // Get current height value from user profile
+  const getHeightValue = (): number | null => {
+    if (!userProfile) return null;
+    const measurement = userProfile.measurements.find(m => m.type === 'height');
+    return measurement ? measurement.value : null;
+  };
+  
+  // Format display value with units
+  const formatValue = (value: number | null): string => {
+    if (value === null) return "Not set";
+    // Convert to imperial if needed
+    const displayValue = unitSystem === 'imperial' ? convertToImperial(value, 'height') : value;
+    return unitSystem === 'metric' ? `${displayValue} cm` : `${displayValue} in`;
+  };
+  
+  const handleAddHeight = () => {
+    setShowHeightInput(true);
+    // Set default height if not already set
+    if (getHeightValue() === null) {
+      updateMeasurement('height', 170); // Default to 170cm
+    }
+  };
+  
   return (
-    <div className="border-2 border-dashed border-fit-beige rounded-lg p-8 text-center">
-      <div className="max-w-md mx-auto">
-        <div className="mb-6">
-          <div className="w-20 h-20 mx-auto mb-4 bg-fit-beige rounded-full flex items-center justify-center">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              className="w-10 h-10 text-fit-taupe"
-            >
-              <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Z" />
-              <path d="M3 10h18" />
-              <path d="M7 3v14" />
-            </svg>
-          </div>
-          
-          <h3 className="text-xl font-gloock mb-2">Let's build your smart wardrobe</h3>
-          <p className="text-muted-foreground mb-6">
-            Add your first piece and help Fit Assistant learn what fits you best.
-          </p>
+    <Card className="h-full">
+      <CardContent className="p-6">
+        <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
+          {!showHeightInput ? (
+            <>
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                <Ruler className="h-8 w-8 text-muted-foreground" />
+              </div>
+              
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">Get Started</h3>
+                <p className="text-sm text-muted-foreground">
+                  Add your height and garments to get personalized fit recommendations
+                </p>
+              </div>
+              
+              <div className="flex flex-col space-y-3">
+                <Button onClick={handleAddHeight} variant="outline" className="w-full justify-start">
+                  <Ruler className="mr-2 h-4 w-4" />
+                  Add Your Height
+                </Button>
+                <Button onClick={onAddGarment} className="w-full justify-start">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add First Garment
+                </Button>
+              </div>
+            </>
+          ) : (
+            <div className="w-full space-y-6">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-lg font-medium flex items-center gap-2">
+                  <Ruler className="h-4 w-4" />
+                  Your Height
+                </h3>
+                <UnitToggle value={unitSystem} onChange={toggleUnitSystem} />
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between flex-wrap">
+                    <span className="text-sm font-medium">Height</span>
+                    <span className="text-sm">
+                      {formatValue(getHeightValue())}
+                    </span>
+                  </div>
+                  
+                  <Slider
+                    min={0}
+                    max={unitSystem === 'metric' ? 220 : convertToImperial(220, 'height')}
+                    step={unitSystem === 'metric' ? 1 : 0.5}
+                    value={[unitSystem === 'metric' ? 
+                      getHeightValue() || 170 : 
+                      convertToImperial(getHeightValue() || 170, 'height')
+                    ]}
+                    onValueChange={(values) => {
+                      const value = values[0];
+                      const metricValue = unitSystem === 'metric' ? value : 
+                        Math.round(value * 2.54); // Convert inches to cm
+                      updateMeasurement('height', metricValue);
+                    }}
+                  />
+                </div>
+                
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Height helps estimate other body measurements for better fit recommendations.
+                  </p>
+                </div>
+                
+                <div className="flex space-x-2">
+                  <Button onClick={() => setShowHeightInput(false)} variant="outline" className="flex-1">
+                    Back
+                  </Button>
+                  <Button onClick={onAddGarment} className="flex-1">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Garment
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-        
-        <Button onClick={onAddGarment} className="mb-6">
-          <Plus className="w-4 h-4 mr-2" /> Add Your First Garment
-        </Button>
-        
-        <p className="text-sm text-muted-foreground">
-          Start with something you wear often and love the fit of.
-        </p>
-        
-        <div className="mt-8 grid grid-cols-2 gap-4">
-          <div className="bg-muted p-4 rounded-lg aspect-square flex items-center justify-center text-sm text-muted-foreground">
-            <p>Where your favorite jeans go</p>
-          </div>
-          <div className="bg-muted p-4 rounded-lg aspect-square flex items-center justify-center text-sm text-muted-foreground">
-            <p>The shirt that fits just right</p>
-          </div>
-        </div>
-        
-        <p className="mt-6 text-xs text-muted-foreground">
-          0 garments teaching Fit Assistant. Add one to start improving your recommendations.
-        </p>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

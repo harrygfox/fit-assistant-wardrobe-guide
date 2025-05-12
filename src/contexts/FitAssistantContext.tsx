@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { 
   UserProfile, 
@@ -37,14 +36,12 @@ const STORAGE_KEYS = {
   UNIT_SYSTEM: 'fit_assistant_unit_system'
 };
 
-// Simulated user profile for now
+// Simulated user profile for now - initialize with empty measurements
 const DEFAULT_PROFILE: UserProfile = {
   id: '1',
   name: 'Demo User',
   email: 'demo@example.com',
-  measurements: [
-    { type: 'height', value: 170 }
-  ],
+  measurements: [],
   preferredUnits: 'metric'
 };
 

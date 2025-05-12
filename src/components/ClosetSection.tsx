@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import GarmentCard from './GarmentCard';
 import EmptyCloset from './EmptyCloset';
 import FitAssistantCard from './FitAssistantCard';
-import HeightMeasurement from './HeightMeasurement';
 import { Plus } from 'lucide-react';
 import { Garment } from '@/types';
 
@@ -74,12 +73,9 @@ const ClosetSection: React.FC<{
       </div>
       
       {garments.length === 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="col-span-1">
             <FitAssistantCard />
-          </div>
-          <div className="col-span-1">
-            <HeightMeasurement />
           </div>
           <div className="col-span-1">
             <EmptyCloset onAddGarment={onAddGarment} />
@@ -89,9 +85,6 @@ const ClosetSection: React.FC<{
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="col-span-1">
             <FitAssistantCard />
-          </div>
-          <div className="col-span-1">
-            <HeightMeasurement />
           </div>
           {sortedGarments.map((garment) => (
             <GarmentCard 
