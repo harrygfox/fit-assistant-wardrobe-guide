@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { 
   UserProfile, 
@@ -21,8 +22,6 @@ interface FitAssistantContextType {
   deleteGarment: (id: string) => void;
   toggleUnitSystem: () => void;
   updateMeasurement: (type: MeasurementType, value: number) => void;
-  addMeasurement: (type: MeasurementType) => void;
-  removeMeasurement: (type: MeasurementType) => void;
   convertToImperial: (value: number, type?: MeasurementType) => number;
   convertToMetric: (value: number, type?: MeasurementType) => number;
   getFitAssistantGarments: () => Garment[];
@@ -111,8 +110,10 @@ export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return parseStoredGarments(storedGarments);
   });
   
-  // Changed default from 'metric' to 'imperial'
-  const [unitSystem, setUnitSystem] = useState<UnitSystem>('imperial');
+  const [unitSystem, setUnitSystem] = useState<UnitSystem>(() => {
+    const storedUnitSystem = localStorage.getItem(STORAGE_KEYS.UNIT_SYSTEM) as UnitSystem | null;
+    return storedUnitSystem || 'imperial';
+  });
   
   const [isLoading, setIsLoading] = useState(false);
 
@@ -187,46 +188,25 @@ export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ 
     setGarments(prev => prev.filter(garment => garment.id !== id));
   };
   
-  // Update a body measurement
+  // Update a body measurement (now only height)
   const updateMeasurement = (type: MeasurementType, value: number) => {
     if (!userProfile) return;
     
-    const updatedMeasurements = userProfile.measurements.map(measurement => 
-      measurement.type === type ? { ...measurement, value } : measurement
-    );
+    // Only allow updating height for now
+    if (type !== 'height') return;
+    
+    const updatedMeasurements = [...userProfile.measurements];
+    const existingIndex = updatedMeasurements.findIndex(m => m.type === type);
+    
+    if (existingIndex >= 0) {
+      updatedMeasurements[existingIndex].value = value;
+    } else {
+      updatedMeasurements.push({ type, value });
+    }
     
     setUserProfile({
       ...userProfile,
       measurements: updatedMeasurements
-    });
-  };
-  
-  // Add a body measurement
-  const addMeasurement = (type: MeasurementType) => {
-    if (!userProfile) return;
-    
-    // Check if measurement already exists
-    if (userProfile.measurements.some(m => m.type === type)) return;
-    
-    setUserProfile({
-      ...userProfile,
-      measurements: [
-        ...userProfile.measurements,
-        { type, value: 0 } // Default value
-      ]
-    });
-  };
-  
-  // Remove a body measurement
-  const removeMeasurement = (type: MeasurementType) => {
-    if (!userProfile) return;
-    
-    // Don't allow removing height (required)
-    if (type === 'height') return;
-    
-    setUserProfile({
-      ...userProfile,
-      measurements: userProfile.measurements.filter(m => m.type !== type)
     });
   };
   
@@ -280,8 +260,6 @@ export const FitAssistantProvider: React.FC<{ children: React.ReactNode }> = ({ 
     deleteGarment,
     toggleUnitSystem,
     updateMeasurement,
-    addMeasurement,
-    removeMeasurement,
     convertToImperial,
     convertToMetric,
     getFitAssistantGarments,
