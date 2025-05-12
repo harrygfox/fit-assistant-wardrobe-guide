@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import UnitToggle from './UnitToggle';
 import { MeasurementType } from '@/types';
-import { Height } from 'lucide-react';
+import { Weight } from 'lucide-react';
 
 const HeightMeasurement: React.FC = () => {
   const { userProfile, unitSystem, toggleUnitSystem, updateMeasurement, convertToImperial } = useFitAssistant();
@@ -29,7 +29,7 @@ const HeightMeasurement: React.FC = () => {
       <CardHeader className="pb-3">
         <div className="flex justify-between items-center">
           <CardTitle className="text-md flex items-center gap-2">
-            <Height className="h-4 w-4" />
+            <Weight className="h-4 w-4" />
             Height
           </CardTitle>
           <UnitToggle value={unitSystem} onChange={toggleUnitSystem} />
