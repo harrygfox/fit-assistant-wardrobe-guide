@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, Ruler, TShirt, Hanger } from 'lucide-react';
+import { Plus, Ruler, Shirt, Bookmark } from 'lucide-react';
 import { useFitAssistant } from '@/contexts/FitAssistantContext';
 import { Slider } from '@/components/ui/slider';
 import UnitToggle from './UnitToggle';
@@ -42,10 +42,10 @@ const EmptyCloset: React.FC<EmptyClosetProps> = ({ onAddGarment }) => {
   const GarmentSkeleton = () => (
     <div className="relative w-full h-48 mb-4 animate-pulse">
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10">
-        <Hanger className="w-12 h-12 text-muted-foreground" />
+        <Bookmark className="w-12 h-12 text-muted-foreground" />
       </div>
       <div className="absolute top-12 left-1/2 transform -translate-x-1/2 w-[80%] h-40 bg-muted rounded-md flex items-center justify-center">
-        <TShirt className="w-20 h-20 text-muted-foreground opacity-30" />
+        <Shirt className="w-20 h-20 text-muted-foreground opacity-30" />
       </div>
     </div>
   );
