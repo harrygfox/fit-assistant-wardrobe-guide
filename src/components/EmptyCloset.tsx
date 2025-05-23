@@ -40,14 +40,9 @@ const EmptyCloset: React.FC<EmptyClosetProps> = ({ onAddGarment }) => {
   };
   
   const GarmentSkeleton = () => (
-    <div className="relative w-full h-48 mb-4 animate-pulse">
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10">
-        <Bookmark className="w-12 h-12 text-muted-foreground" />
+      <div className="h-20 rounded-md flex items-center justify-center">
+        <Shirt className="w-10 h-10 text-muted-foreground opacity-30" />
       </div>
-      <div className="absolute top-12 left-1/2 transform -translate-x-1/2 w-[80%] h-40 bg-muted rounded-md flex items-center justify-center">
-        <Shirt className="w-20 h-20 text-muted-foreground opacity-30" />
-      </div>
-    </div>
   );
 
   return (

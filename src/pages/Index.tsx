@@ -21,13 +21,6 @@ const Index = () => {
 
   return (
     <div className="container py-8">
-      <header className="mb-12 text-center">
-        <h1 className="text-4xl font-gloock mb-2">My Closet</h1>
-        <p className="text-muted-foreground">
-          Track your garments and get personalized fit recommendations
-        </p>
-      </header>
-      
       <ClosetSection 
         onAddGarment={handleOpenGarmentForm}
         onEditGarment={handleEditGarment}
